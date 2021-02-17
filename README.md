@@ -13,8 +13,8 @@ Estimate of time needed to complete: 4
 
 Start time: 2:30pm
 
-Finish time: _____
+Finish time: 4:45pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 2 hours 15 minutes
 
 ## References
