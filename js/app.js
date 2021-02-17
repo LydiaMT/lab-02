@@ -6,15 +6,16 @@ $.ajax('data/page-1.json')
   .then(data => {
     dataFunction(data);
   });
-
+const reference = [];
 function dataFunction(data) {
   data.forEach(animal => {
     new HornedAnimal(animal.image_url, animal.title, animal.description, animal.keyword, animal.horns);
-    renderAnimalOptions(animal.keyword);
+    if (!reference.includes(animal.keyword)){
+      renderAnimalOptions(animal.keyword, reference);
+    }
     renderAnimalImages(animal.image_url);
   });
 }
-console.log(HornedAnimal.allHornedAnimals);
 
 function HornedAnimal(image_url, title, description, keyword, horns) {
   this.image_url = image_url;
@@ -24,12 +25,12 @@ function HornedAnimal(image_url, title, description, keyword, horns) {
   this.horns = horns;
   HornedAnimal.allHornedAnimals.push(this);
 }
-function renderAnimalOptions(dummy){
-  $('select').append('<option>' + dummy + '</option>');
+function renderAnimalOptions(dropdownOptions, refArr){
+  $('select').append('<option>' + dropdownOptions + '</option>');
+  refArr.push(dropdownOptions);
 }
-
-function renderAnimalImages(dummy){
-  $('div').append('<img src=' + dummy + '>');
+function renderAnimalImages(animalImages){
+  $('div').append('<img src=' + animalImages + '>');
 }
 function forDropdownChange(event){
   $('div').empty();
@@ -40,3 +41,5 @@ function forDropdownChange(event){
   });
 }
 $('select').on('change', forDropdownChange);
+
+
