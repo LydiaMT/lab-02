@@ -1,45 +1,85 @@
 'use strict';
-
-HornedAnimal.allHornedAnimals = [];
-
-$.ajax('data/page-1.json')
-  .then(data => {
-    dataFunction(data);
-  });
 const reference = [];
-function dataFunction(data) {
-  data.forEach(animal => {
-    new HornedAnimal(animal.image_url, animal.title, animal.description, animal.keyword, animal.horns);
-    if (!reference.includes(animal.keyword)){
-      renderAnimalOptions(animal.keyword, reference);
-    }
-    renderAnimalImages(animal.image_url);
-  });
-}
 
-function HornedAnimal(image_url, title, description, keyword, horns) {
+function HornedAnimal1(image_url, title, description, keyword, horns) {
   this.image_url = image_url;
   this.title = title;
   this.description = description;
   this.keyword = keyword;
   this.horns = horns;
-  HornedAnimal.allHornedAnimals.push(this);
+  HornedAnimal1.allHornedAnimals.push(this);
 }
-function renderAnimalOptions(dropdownOptions, refArr){
-  $('select').append('<option>' + dropdownOptions + '</option>');
-  refArr.push(dropdownOptions);
+HornedAnimal1.allHornedAnimals = [];
+
+HornedAnimal1.prototype.renderAnimalImages = function (){
+  HornedAnimal1.allHornedAnimals.forEach(animal => {if(!reference.includes(animal.keyword.toLowerCase())){renderAnimalOptions(animal.keyword, reference);}});
+  const templateHtmlPotato = $('#mustache-template').html();
+  const outputFromMustache = Mustache.render(templateHtmlPotato, this);
+  $('#forTemplate').append(outputFromMustache);
+};
+
+function HornedAnimal2(image_url, title, description, keyword, horns) {
+  this.image_url = image_url;
+  this.title = title;
+  this.description = description;
+  this.keyword = keyword;
+  this.horns = horns;
+  HornedAnimal2.allHornedAnimals.push(this);
 }
-function renderAnimalImages(animalImages){
-  $('div').append('<img src=' + animalImages + '>');
-}
-function forDropdownChange(event){
-  $('div').empty();
-  HornedAnimal.allHornedAnimals.forEach(animal => {
-    if (animal.keyword === event.target.value){
-      $('div').append('<img src=' + animal.image_url + '>');
+HornedAnimal2.allHornedAnimals = [];
+
+HornedAnimal2.prototype.renderAnimalImages = function (){
+  HornedAnimal2.allHornedAnimals.forEach(animal => {if(!reference.includes(animal.keyword.toLowerCase())){renderAnimalOptions(animal.keyword, reference);}});
+  const templateHtmlPotato = $('#mustache-template').html();
+  const outputFromMustache = Mustache.render(templateHtmlPotato, this);
+  $('#forTemplate').append(outputFromMustache);
+};
+
+$.ajax('data/page-1.json').then(data => {dataFunction(data, HornedAnimal1);});
+
+$.ajax('data/page-2.json').then(data => {dataFunction(data, HornedAnimal2);});
+
+function dataFunction(data, constructor) {
+  data.forEach(animal => {
+    new constructor(animal.image_url, animal.title, animal.description, animal.keyword, animal.horns);
+    if (!reference.includes(animal.keyword.toLowerCase())){
+      renderAnimalOptions(animal.keyword, reference);
     }
   });
 }
-$('select').on('change', forDropdownChange);
+
+function renderAnimalOptions(dropdownOptions, reference){
+  $('select').append('<option>' + dropdownOptions + '</option>');
+  reference.push(dropdownOptions.toLowerCase());
+}
+console.log(HornedAnimal2.allHornedAnimals);
+function insideDropdownChange(event, array){
+  $('#forTemplate').empty();
+  array.allHornedAnimals.forEach(animal => {
+    if (animal.keyword === event.target.value){
+      // $('#forTemplate').append(`<img src= ${animal.image_url} >`);
+      animal.renderAnimalImages();
+    }
+  });
+}
+
+function firstForDropdownChange(event){
+  HornedAnimal1.allHornedAnimals.forEach(animal => {
+    if(animal.keyword === event.target.value){
+      insideDropdownChange(event, HornedAnimal1);
+    }
+    else{
+      insideDropdownChange(event, HornedAnimal2);
+    }
+  });
+}
+
+
+$('select').on('click', firstForDropdownChange);
+$('#horn1').on('click', function(){$('#forTemplate').empty(); $('select').empty(); reference.length = 0; HornedAnimal1.allHornedAnimals.forEach(animal => {animal.renderAnimalImages();});});
+
+$('#horn2').on('click', function(){$('#forTemplate').empty(); $('select').empty(); reference.length = 0; HornedAnimal2.allHornedAnimals.forEach(animal => {animal.renderAnimalImages();});});
+
+console.log(reference);
 
 
