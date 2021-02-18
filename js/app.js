@@ -82,33 +82,48 @@ $('#horn2').on('click', function(){$('#forTemplate').empty(); $('select').empty(
 
 $('#sort').on('click', function() {
   reference.length = 0;
-  const imgSort = $('.img-sort');
-  for (let i = 0; i < imgSort; i++) {
-    reference.push($(`${imgSort[i]}`).html());
-  }
-  // imgSort.forEach(img => {
-  //   reference.push($(`${img}`).attr('src'));
-  // });
-  // console.log(reference);
-  console.log(reference);
+  $('.img-sort').each(function(){
+    reference.push(this.src);
+  });
+
+
+  const newCheckArr = [];
+  console.log(newCheckArr);
+
+  $('#forTemplate').empty();
+  HornedAnimal1.allHornedAnimals.forEach(animal => {
+    if (reference.includes(animal.image_url)){
+      newCheckArr.push(animal);
+    }
+  });
+  HornedAnimal2.allHornedAnimals.forEach(animal => {
+    if (reference.includes(animal.image_url)){
+      newCheckArr.push(animal);
+    }
+  });
+  newCheckArr.sort((l,r) => {
+    if(l.horns > r.horns){
+      return 1;
+    } else if(l.horns < r.horns){
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  console.log(newCheckArr);
+  HornedAnimal1.allHornedAnimals.forEach(animal => {
+    newCheckArr.forEach(a => {
+      if (animal.image_url === a.image_url){
+        animal.renderAnimalImages();
+      }
+    });
+  });
+  HornedAnimal2.allHornedAnimals.forEach(animal => {
+    newCheckArr.forEach(a => {
+      if (animal.image_url === a.image_url){
+        animal.renderAnimalImages();
+      }
+    });
+  });
+  console.log(newCheckArr);
 });
-//   reference.sort(compareAnimals);
-//   function compareAnimals (left, right){
-//     if(left > right){
-//       return 1;
-//     } else if(left < right){
-//       return -1;
-//     } else {
-//       return 0;
-//     }
-// //   }
-//   HornedAnimal1.allHornedAnimals.forEach(animal => {
-//     if(reference.includes(animal.keyword.toLowerCase())){
-//       animal.renderAnimalImages();
-// //     }
-//   });
-// });
-
-
-// if (!reference.includes(animal.keyword.toLowerCase())){
-//   renderAnimalOptions(animal.keyword, reference)
