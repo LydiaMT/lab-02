@@ -3,11 +3,34 @@
 img{
   width: 300px;
   height: 300px;
+  border: thin black solid;
+  justify-content: center;
 }
 h1{
   font-family: 'Pacifico', cursive;
   font-size:xx-large;
+  display: block;
 }
-/* #forTemplate{
-  float:left;
-} */
+
+#forTemplate{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+#forTemplate > div {
+  height: 400px;
+  width: 400px;
+  justify-content: center;
+}
+
+h2 {
+  font-family: 'Pacifico', cursive;
+  font-size:large;
+  display: block;
+  text-align: center;
+}
+p {
+  display: block;
+}

@@ -52,7 +52,6 @@ function renderAnimalOptions(dropdownOptions, reference){
   $('select').append('<option>' + dropdownOptions + '</option>');
   reference.push(dropdownOptions.toLowerCase());
 }
-console.log(HornedAnimal2.allHornedAnimals);
 function insideDropdownChange(event, array){
   $('#forTemplate').empty();
   array.allHornedAnimals.forEach(animal => {
@@ -75,11 +74,41 @@ function firstForDropdownChange(event){
 }
 
 
-$('select').on('click', firstForDropdownChange);
+$('select').on('change', firstForDropdownChange);
 $('#horn1').on('click', function(){$('#forTemplate').empty(); $('select').empty(); reference.length = 0; HornedAnimal1.allHornedAnimals.forEach(animal => {animal.renderAnimalImages();});});
 
 $('#horn2').on('click', function(){$('#forTemplate').empty(); $('select').empty(); reference.length = 0; HornedAnimal2.allHornedAnimals.forEach(animal => {animal.renderAnimalImages();});});
 
-console.log(reference);
+
+$('#sort').on('click', function() {
+  reference.length = 0;
+  const imgSort = $('.img-sort');
+  for (let i = 0; i < imgSort; i++) {
+    reference.push($(`${imgSort[i]}`).html());
+  }
+  // imgSort.forEach(img => {
+  //   reference.push($(`${img}`).attr('src'));
+  // });
+  // console.log(reference);
+  console.log(reference);
+});
+//   reference.sort(compareAnimals);
+//   function compareAnimals (left, right){
+//     if(left > right){
+//       return 1;
+//     } else if(left < right){
+//       return -1;
+//     } else {
+//       return 0;
+//     }
+// //   }
+//   HornedAnimal1.allHornedAnimals.forEach(animal => {
+//     if(reference.includes(animal.keyword.toLowerCase())){
+//       animal.renderAnimalImages();
+// //     }
+//   });
+// });
 
 
+// if (!reference.includes(animal.keyword.toLowerCase())){
+//   renderAnimalOptions(animal.keyword, reference)
